@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.github.uniqueck</groupId>
+    <artifactId>shellspec-example</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <build>
+        <resources>
+            <resource>
+                <directory>${project.basedir}/src/main/scripts</directory>
+                <includes>
+                    <include>*.sh</include>
+                </includes>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/main/scripts</targetPath>
+            </resource>
+        </resources>
+
+        <testResources>
+            <testResource>
+                <directory>${project.basedir}/src/test/spec</directory>
+                <includes>
+                    <include>*.sh</include>
+                </includes>
+                <filtering>true</filtering>
+                <targetPath>${project.build.directory}/test/spec</targetPath>
+            </testResource>
+        </testResources>
+
+
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <execution>
+                        <id>download-shellspec</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <executable>wget</executable>
+                            <arguments>
+                                <argument>-q</argument>
+                                <argument>
+                                    https://github.com/shellspec/shellspec/releases/latest/download/shellspec-dist.tar.gz
+                                </argument>
+                            </arguments>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>extract-shellspec</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <executable>tar</executable>
+                            <arguments>
+                                <argument>-xf</argument>
+                                <argument>shellspec-dist.tar.gz</argument>
+                            </arguments>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>execute-shellspec</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>test</phase>
+                        <configuration>
+                            <executable>${project.build.directory}/shellspec/shellspec</executable>
+                            <arguments>
+                                <argument>-o</argument>
+                                <argument>j</argument>
+                                <argument>-f</argument>
+                                <argument>d</argument>
+                                <argument>test/spec</argument>
+                            </arguments>
+                            <workingDirectory>${project.build.directory}</workingDirectory>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+
+    </build>
+
+
+</project>
