@@ -12,11 +12,15 @@ jobs:
           path: target/report
       - store_artifacts:
           path: target/report
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn -B verify sonar:sonar
 workflows:
   version: 2
   build:
     jobs:
       - build:
+          context: SonarCloud
           filters:
             tags:
               only: /.*/
