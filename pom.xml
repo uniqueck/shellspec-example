@@ -10,9 +10,6 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <sonar.projectKey>uniqueck_shellspec-example</sonar.projectKey>
-        <sonar.organization>uniqueck-github</sonar.organization>
-        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 
 
@@ -89,8 +86,12 @@
                             <arguments>
                                 <argument>-o</argument>
                                 <argument>j</argument>
+                                <argument>-o</argument>
+                                <argument>d</argument>
                                 <argument>-f</argument>
                                 <argument>d</argument>
+                                <argument>-s</argument>
+                                <argument>/bin/bash</argument>
                                 <argument>test/spec</argument>
                             </arguments>
                             <workingDirectory>${project.build.directory}</workingDirectory>
